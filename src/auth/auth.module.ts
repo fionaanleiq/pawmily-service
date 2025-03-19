@@ -5,10 +5,16 @@ import { PassportModule } from "@nestjs/passport"
 import { ACCESS_EXPIRE_IN, ACCESS_SECRET_KEY } from "src/config/constants.config";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
+import { UserModule } from "src/user/user.module";
+import jwtConfig from "./config/jwt.config";
+import refreshJwtConfig from "./config/refresh-jwt.config";
+import { LocalStrategy } from "./strategies/local.strategy";
+import { JwtStrategy } from "./strategies/jwt.strategy";
 
 @Module({
     imports: [
-        ConfigModule,
+        ConfigModule.forFeature(jwtConfig),
+        ConfigModule.forFeature(refreshJwtConfig),
         PassportModule,
         JwtModule.registerAsync({
             imports: [ConfigModule],
@@ -21,9 +27,10 @@ import { AuthService } from "./auth.service";
             inject: [ConfigService],
             global: true,
         }),
+        UserModule
     ],
     controllers: [AuthController],
-    providers: [AuthService],
+    providers: [AuthService, LocalStrategy, JwtStrategy],
     exports: []
 })
 export class AuthModule {}

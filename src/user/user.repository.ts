@@ -10,30 +10,30 @@ export class UserRepository {
     constructor (@InjectModel(User.name) private userModel: Model<User>) {}
 
     async addUser (addUserRequestDto: AddUserRequestDto) {
-        return this.userModel.create(addUserRequestDto);
+        return await this.userModel.create(addUserRequestDto);
     }
 
     async updateUser (id: mongoose.Types.ObjectId, updateUserRequestDto: UpdateUserRequestDto) {
-        return this.userModel.findByIdAndUpdate(id, updateUserRequestDto, {new: true, runValidators: true}) 
+        return await this.userModel.findByIdAndUpdate(id, updateUserRequestDto, {new: true, runValidators: true}) 
     }
 
     async getOneUser (id: mongoose.Types.ObjectId) {
-        return this.userModel.findById(id);
+        return await this.userModel.findById(id);
     }
 
     async getUsers (query?: any) {
-        return this.userModel.find(query).sort('createdBy');
+        return await this.userModel.find(query).sort('createdBy');
     }
 
     async deleteOneUser (id: mongoose.Types.ObjectId) {
-        return this.userModel.findByIdAndDelete(id);
+        return await this.userModel.findByIdAndDelete(id);
     }
 
     async deleteUsers () {
-        return this.userModel.deleteMany();
+        return await this.userModel.deleteMany();
     }
 
     async getUserByEmail (emailAddress: string) {
-        return this.userModel.findOne({emailAddress})
+        return await this.userModel.findOne({emailAddress})
     }
 }

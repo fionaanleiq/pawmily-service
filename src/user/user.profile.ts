@@ -6,20 +6,38 @@ import { User } from "./user.schema";
 
 @Injectable()
 export class UserProfile extends AutomapperProfile {
-    constructor (
+    constructor(
         @InjectMapper() mapper: Mapper
     ) {
         super(mapper);
     }
 
-    override get profile () {
+    override get profile() {
         return (mapper) => {
-            createMap(mapper, User, UserResponseDto, 
+            createMap(mapper, User, UserResponseDto,
                 forMember(
                     (dest) => dest.fullName,
-                mapFrom(
-                    (src) => src.fullName
-                )
+                    mapFrom(
+                        (src) => src.fullName
+                    )
+                ),
+                forMember(
+                    (dest) => dest.emailAddress,
+                    mapFrom(
+                        (src) => src.emailAddress
+                    )
+                ),
+                forMember(
+                    (dest) => dest.role,
+                    mapFrom(
+                        (src) => src.role
+                    )
+                ),
+                forMember(
+                    (dest) => dest.status,
+                    mapFrom(
+                        (src) => src.status
+                    )
                 )
             )
         }
