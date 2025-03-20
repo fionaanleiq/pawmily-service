@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
+import { PostModule } from './posts/post.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { classes } from '@automapper/classes';
       strategyInitializer: classes()
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    PostModule
   ],
   controllers: [AppController],
   providers: [

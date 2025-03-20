@@ -23,11 +23,12 @@ export class AuthService {
         @Inject(refreshJwtConfig.KEY) private readonly refreshTokenConfig: ConfigType<typeof refreshJwtConfig>
     ) { }
 
-    generateTokens (user: User): AuthLoginResponseDto {
+    generateTokens (user: UserDocument): AuthLoginResponseDto {
         const userObject = {
             emailAddress: user.emailAddress,
             role: user.role,
-            status: user.status
+            status: user.status,
+            id: user._id
         }
         const accessToken = this.jwtService.sign(userObject, this.jwtTokenConfig);
         const refreshToken = this.jwtService.sign(userObject, this.refreshTokenConfig)

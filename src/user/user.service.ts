@@ -55,4 +55,9 @@ export class UserService {
         const user = await this.userRepository.getUserByEmail(emailAddress);
         return user;
     }
+
+    async getUserName (id: string) {
+        const user = await this.getOneUser(id);
+        return user.fullName;
+    }
 }
