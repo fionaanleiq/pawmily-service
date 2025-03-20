@@ -7,10 +7,13 @@ import { parseId } from "src/shared/utils/shared.utils";
 import { CommentPostRequestDto } from "./dto/request/comment-post-request.dto";
 import mongoose from "mongoose";
 import { NotFoundError } from "rxjs";
+import { UserService } from "src/user/user.service";
 
 @Injectable()
 export class PostService {
-    constructor(private readonly postRepository: PostRepository) { }
+    constructor(private readonly postRepository: PostRepository,
+        private readonly userService: UserService
+    ) { }
 
     async createPost(user: any, addPostRequestDto: CreatePostRequestDto) {
         addPostRequestDto.createdBy = user._id
@@ -29,9 +32,11 @@ export class PostService {
         const posts = await this.postRepository.getAllPosts();
         if (!posts.length) throw new NotFoundException('Posts Not Found');
         return posts;
-        // return posts.map((post) => {
-        //     post.likes = 
-        // })
+        const formattedPosts = posts.map((post) => {
+            post.likes.map((like) => {
+                return await this.userService.getUserName(like)
+            })
+        })
     }
 
     async deleteOnePost(id: string) {
