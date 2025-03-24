@@ -7,7 +7,7 @@ export class CommentPostRequestDto {
 
     @ValidateIf(o => o.likes)
     @IsArray()
-    likes?: string[];
+    likes?: string[] | undefined;
 
     @ValidateIf(o => o.commentedBy)
     @IsString()

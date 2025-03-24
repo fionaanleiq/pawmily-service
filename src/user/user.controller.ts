@@ -1,11 +1,17 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, Req, UseGuards } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { AddUserRequestDto } from "./dto/request/add-user-request.dto";
 import { UpdateUserRequestDto } from "./dto/request/update-user-request.dto";
 import { UserResponseDto } from "./dto/response/add-user-response.dto";
 import { BaseResponse } from "src/shared/dto/response/base-response.dto";
+import { JwtGuard } from "src/auth/guards/jwt.guard";
+import { RolesGuard } from "src/shared/guards/roles.guard";
+import { ROLE_TYPE } from "./user.schema";
+import { Roles } from "src/shared/decorators/roles.decorator";
 
 @Controller('user')
+@UseGuards(JwtGuard, RolesGuard)
+@Roles(ROLE_TYPE.USER)
 export class UserController {
     constructor(private readonly userService: UserService) { }
 
@@ -61,6 +67,31 @@ export class UserController {
         return {
             message: deletedUsers.deletedCount ? 'Deleted users': 'No users deleted',
             data: deletedUsers
+        }
+    }
+
+    @Patch(['follow/:id', 'unfollow/:id'])
+    async followUnfollowUser(@Param('id') id: string, @Req() req): Promise<BaseResponse<UserResponseDto>> {
+        return await this.userService.followUnfollowUser(id, req.user);
+    }
+
+    @Get('view/:id/followers') 
+    async getAllFollowers (@Param('id') id: string): Promise<BaseResponse<UserResponseDto[]>> {
+        if (!id) throw new BadRequestException('Missing Param ID');
+        const followersResult = await this.userService.getAllFollowers(id);
+        
+        return {
+            message: followersResult.length ? 'Fetched all followers ' : 'No followers found',
+            data: followersResult || []
+        }
+    }
+
+    @Get('view/:id/following')
+    async getAllFollowing(@Param('id') id: string): Promise<BaseResponse<UserResponseDto[]>> {
+        const followingResult = await this.userService.getAllFollowing(id);
+        return {
+            message: followingResult.length ? 'Fetched all following users ' : 'No following users found',
+            data: followingResult || []
         }
     }
 }

@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
-import { IsEmail, IsIn, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsIn, IsNotEmpty, IsString, ValidateIf } from "class-validator";
 import { toProperCase } from "src/shared/utils/shared.utils";
 import { ROLE_TYPE, roleList, STATUS_TYPE, statusList } from "src/user/user.schema";
 import { AutoMap } from "@automapper/classes";
@@ -39,4 +39,14 @@ export class AddUserRequestDto {
     @IsIn(statusList)
     @ApiProperty({example: STATUS_TYPE.ACTIVE, description: "This is the user's status"})
     status: string;
+
+    @ValidateIf(o => o.following)
+    @IsString()
+    @IsNotEmpty()
+    following?: string;
+
+    @ValidateIf(o => o.follower)
+    @IsString()
+    @IsNotEmpty()
+    follower?: string;
 }

@@ -13,6 +13,7 @@ export class PostRepository {
     ) { }
 
     async createPost(addPostRequestDto: CreatePostRequestDto) {
+        console.log(addPostRequestDto)
         return await this.postModel.create(addPostRequestDto);
     }
 

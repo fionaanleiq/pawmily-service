@@ -27,6 +27,12 @@ export class User {
     @Prop({required: [true, 'Required'], type: String})
     password: string;
 
+    @Prop({required: [true, 'Required'], type: [String]})
+    followers: string[];
+
+    @Prop({required: [true, 'Required'], type: [String]})
+    following: string[];
+
     @Prop({required: [true, 'Required'], type: String, enum: roleList })
     role: string;
 
