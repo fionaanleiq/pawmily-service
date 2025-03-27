@@ -11,7 +11,7 @@ import { Roles } from "src/shared/decorators/roles.decorator";
 
 @Controller('user')
 @UseGuards(JwtGuard, RolesGuard)
-@Roles(ROLE_TYPE.USER)
+@Roles(ROLE_TYPE.ADMIN)
 export class UserController {
     constructor(private readonly userService: UserService) { }
 
@@ -70,11 +70,13 @@ export class UserController {
         }
     }
 
+    @Roles(ROLE_TYPE.ADMIN, ROLE_TYPE.USER)
     @Patch(['follow/:id', 'unfollow/:id'])
     async followUnfollowUser(@Param('id') id: string, @Req() req): Promise<BaseResponse<UserResponseDto>> {
         return await this.userService.followUnfollowUser(id, req.user);
     }
 
+    @Roles(ROLE_TYPE.ADMIN, ROLE_TYPE.USER)
     @Get('view/:id/followers') 
     async getAllFollowers (@Param('id') id: string): Promise<BaseResponse<UserResponseDto[]>> {
         if (!id) throw new BadRequestException('Missing Param ID');
@@ -86,6 +88,7 @@ export class UserController {
         }
     }
 
+    @Roles(ROLE_TYPE.ADMIN, ROLE_TYPE.USER)
     @Get('view/:id/following')
     async getAllFollowing(@Param('id') id: string): Promise<BaseResponse<UserResponseDto[]>> {
         const followingResult = await this.userService.getAllFollowing(id);
@@ -94,4 +97,6 @@ export class UserController {
             data: followingResult || []
         }
     }
+
+   
 }

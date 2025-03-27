@@ -12,6 +12,9 @@ import { AuthModule } from './auth/auth.module';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
 import { PostModule } from './posts/post.module';
+import { UploadModule } from './upload/upload.module';
+import { HomeModule } from './home/home.module';
+import { StoryModule } from './story/story.module';
 
 @Module({
   imports: [
@@ -22,7 +25,10 @@ import { PostModule } from './posts/post.module';
     }),
     UserModule,
     AuthModule,
-    PostModule
+    PostModule,
+    UploadModule,
+    HomeModule,
+    StoryModule
   ],
   controllers: [AppController],
   providers: [

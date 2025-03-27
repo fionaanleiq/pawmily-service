@@ -9,8 +9,8 @@ import { ROLE_TYPE } from "src/user/user.schema";
 import { EditPostRequestDto } from "./dto/request/edit-post-request.dto";
 import { CommentPostRequestDto } from "./dto/request/comment-post-request.dto";
 
-@UseGuards(JwtGuard, RolesGuard)
 @Controller('post')
+@UseGuards(JwtGuard, RolesGuard)
 @Roles(ROLE_TYPE.ADMIN, ROLE_TYPE.USER)
 export class PostController {
     constructor(

@@ -7,3 +7,4 @@ export const DATABASE_PASSWORD = 'DATABASE_PASSWORD';
 export const APP_PORT = 'APP_PORT';
 export const NODE_ENV = 'NODE_ENV';
 export const CONTAINER_PORT = 'CONTAINER_PORT';
+export const MULTER_DEST=''
